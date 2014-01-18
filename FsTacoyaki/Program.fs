@@ -1,7 +1,7 @@
 ﻿(*
 http://www.gamedesign.jp/flash/tacoyaki/tacoyaki.html
 5x5=25の裏と表のコインを同じ色に統一するゲーム
-コインをクリックすると斜め4方向に逆転する。
+コインをクリックすると斜め4方向に反転する。
 
 ●○○○○○●○○○○○●○○○○○●○○○○○●
 ○○○○○●○○○○○●○○○○○●○●○○○●○
@@ -76,7 +76,7 @@ let mask =
         0x08a0820
         0x1041041
     ]
-let nzc (bit:int) =
+let inline nzc (bit:int) =
     if bit = 0 then 0
     else
         let rec find n c =
@@ -84,11 +84,11 @@ let nzc (bit:int) =
             else find (n >>> 1) (c+1)
         find bit 0
 /// get reversal target
-let reverse (n:int) =
+let inline reverse (n:int) =
     n |||
     (n <<< 4) ||| (n <<< 6) ||| (n <<< 8) ||| (n <<< 12) ||| (n <<< 16) ||| (n <<< 18) ||| (n <<< 20) ||| (n <<< 24) |||
     (n >>> 4) ||| (n >>> 6) ||| (n >>> 8) ||| (n >>> 12) ||| (n >>> 16) ||| (n >>> 18) ||| (n >>> 20) ||| (n >>> 24) &&& mask.[nzc n]
-let calc bit n =
+let inline calc bit n =
     let n = reverse n &&& 0x1FFFFFF
     printfn "%A" n
     bit ^^^ n
